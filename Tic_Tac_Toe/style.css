@@ -1,0 +1,18 @@
+body{
+
+    background-image:url('images/hal.jpg') ;
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center;
+    margin: 0; 
+    height: 100vh; 
+    overflow: hidden;
+    border-image-width: auto; 
+}
+
+#tic {
+font-family: 'Arial', sans-serif; 
+    font-size: 48px; 
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
