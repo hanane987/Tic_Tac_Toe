@@ -9,6 +9,22 @@
 <body>
 <h1 id="tic">Tic Tac Toe</h1>
 <div id="grid"></div> 
-<script src="script.js"></script>
+<p id="welcomeMessage"></p>
+
+
+<script>
+const grid = document.getElementById('grid');
+for (let i = 0; i < 400; i++) {  
+const box = document.createElement('div');
+box.classList.add('box');
+            box.addEventListener('mouseover', function() {
+                box.style.backgroundColor = 'lightblue';
+            });
+            box.addEventListener('mouseout', function() {
+                box.style.backgroundColor = '';
+            });
+grid.appendChild(box);
+}
+</script>
 </body>
 </html>
