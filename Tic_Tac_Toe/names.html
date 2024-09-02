@@ -21,16 +21,27 @@
     </div>
 
     <script>
-        document.getElementById('setupForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        const form = document.getElementById('setupForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
             
-            const player1 = document.getElementById('player1').value.trim();
-            const player2 = document.getElementById('player2').value.trim();
+            const input1 = document.getElementById('player1');
+            let player1 = input1.value.trim();
+            const input2 = document.getElementById('player2');
+            let player2 = input2.value.trim();
 
-            localStorage.setItem('player1', player1);
-            localStorage.setItem('player2', player2);
+            if (player1 && player2) { 
+                let players = [
+                    { name: player1 },
+                    { name: player2 }
+                ];
 
-            window.location.href = 'index.html';  
+                localStorage.setItem('players', JSON.stringify(players));
+
+                window.location.href = 'index.html';
+            } else {
+                alert('Please enter names for both players.'); 
+            }
         });
     </script>
 </body>
