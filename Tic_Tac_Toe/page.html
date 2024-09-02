@@ -4,24 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
 </head>
 <body>
-    <button id="startButton">Get started </button>
+    <div class="container">
+        <h1>Welcome To Your Game</h1>
+        <h2>Tic Tac Toe</h2>
+        <button id="startButton">Get Started</button>
+    </div>
     <script>
         document.getElementById('startButton').addEventListener('click', function() {
     window.location.href = 'names.html'; 
 });
 
-
-
-window.onload = function() {
-    var player1 = localStorage.getItem('playerName1');
-    var player2 = localStorage.getItem('playerName2');
-    if (player1 && player2) {
-        document.getElementById('welcomeMessage').textContent = 'Welcome, ' + player1 + ' and ' + player2 + '!';
-    }
-};
 
     </script>
 </body>

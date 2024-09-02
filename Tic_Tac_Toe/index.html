@@ -4,27 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
 </head>
 <body>
-<h1 id="tic">Tic Tac Toe</h1>
-<div id="grid"></div> 
-<p id="welcomeMessage"></p>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div id="grid"></div>
+        <div id="status"></div>
+        <div id="scoreboard">
+            <p>Player 1 (X): <span id="player1Score">0</span></p>
+            <p>Player 2 (O): <span id="player2Score">0</span></p>
+        </div>
+        <button id="resetButton">Reset Game</button>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const grid = document.getElementById('grid');
+    const status = document.getElementById('status');
+    const player1ScoreElem = document.getElementById('player1Score');
+    const player2ScoreElem = document.getElementById('player2Score');
+    const boardSize = 20;
+    const winCondition = 5;
+    let currentPlayer = 'X';
+    const board = Array.from({ length: boardSize }, () => Array(boardSize).fill(''));
+    let gameActive = true;
 
-<script>
-const grid = document.getElementById('grid');
-for (let i = 0; i < 400; i++) {  
-const box = document.createElement('div');
-box.classList.add('box');
-            box.addEventListener('mouseover', function() {
-                box.style.backgroundColor = 'lightblue';
-            });
-            box.addEventListener('mouseout', function() {
-                box.style.backgroundColor = '';
-            });
-grid.appendChild(box);
-}
-</script>
+    const storedData = JSON.parse(localStorage.getItem('ticTacToeData')) || {
+        player1Name: 'Player 1',
+        player2Name: 'Player 2',
+        player1Score: 0,
+        player2Score: 0
+    };
+
+    document.getElementById('player1Score').textContent = storedData.player1Score;
+    document.getElementById('player2Score').textContent = storedData.player2Score;
+
+    for (let i = 0; i < boardSize * boardSize; i++) {
+        const box = document.createElement('div');
+        box.className = 'box';
+        box.setAttribute("id", i); 
+        box.addEventListener('click', handleClick);
+        grid.appendChild(box);
+    }
+
+    function handleClick(event) {
+        const box = event.target;
+        const index = parseInt(box.id); 
+        const row = Math.floor(index / boardSize);
+        const col = index % boardSize;
+
+        if (box.textContent || !gameActive) return;
+
+        box.textContent = currentPlayer;
+        board[row][col] = currentPlayer;
+
+        const winningLine = checkWin(row, col);
+        if (winningLine) {
+            status.textContent = `${currentPlayer} Wins!`;
+            updateScore(currentPlayer);
+            markWinningCells(winningLine);
+        } else if (isBoardFull()) {
+            status.textContent = "It's a Draw!";
+        } else {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+    }
+
+    function updateScore(winner) {
+        if (winner === 'X') {
+            storedData.player1Score++;
+        } else {
+            storedData.player2Score++;
+        }
+        localStorage.setItem('ticTacToeData', JSON.stringify(storedData));
+        player1ScoreElem.textContent = storedData.player1Score;
+        player2ScoreElem.textContent = storedData.player2Score;
+    }
+
+    function checkWin(row, col) {
+        const directions = [
+            { rowDelta: 0, colDelta: 1 },   
+            { rowDelta: 1, colDelta: 0 },   
+            { rowDelta: 1, colDelta: 1 },   
+            { rowDelta: 1, colDelta: -1 }   
+        ];
+
+        for (const { rowDelta, colDelta } of directions) {
+            const line = checkDirection(row, col, rowDelta, colDelta);
+            if (line && line.length === winCondition) {
+                return line;
+            }
+        }
+        return null;
+    }
+
+    function checkDirection(row, col, rowDelta, colDelta) {
+        const line = [{ row, col }];
+        let r = row + rowDelta;
+        let c = col + colDelta;
+
+        while (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === currentPlayer) {
+            line.push({ row: r, col: c });
+            r += rowDelta;
+            c += colDelta;
+        }
+
+        r = row - rowDelta;
+        c = col - colDelta;
+        while (r >= 0 && r < boardSize && c >= 0 && c < boardSize && board[r][c] === currentPlayer) {
+            line.unshift({ row: r, col: c });
+            r -= rowDelta;
+            c -= colDelta;
+        }
+
+        return line.length >= winCondition ? line : null;
+    }
+
+    function markWinningCells(line) {
+        line.forEach(point => {
+            const box = document.getElementById(point.row * boardSize + point.col); 
+            box.classList.add(currentPlayer === 'X' ? 'winning-X' : 'winning-O');
+        });
+    }
+
+    function isBoardFull() {
+        return Array.from(grid.children).every(box => box.textContent !== "");
+    }
+
+    
+});
+
+    </script>
 </body>
 </html>

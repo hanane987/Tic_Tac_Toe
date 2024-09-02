@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Enter Your Name</title>
+    <title>Tic Tac Toe</title>
 </head>
 <body>
-    <h1 classe="tictac">Enter Your Name</h1>
-   
-    <form id="form">
-        <label for="player1">Player 1:</label>
-        <input type="text" id="player1" required>
-        <label for="player2">Player 2 :</label>
-        <input type="text" id="player2" required>
-        <button type="submit">Submit</button>
-    </form>
+    <div class="container">
+        <h1>Enter Player Names</h1>
+        <form id="setupForm"> 
+            <label for="player1">Player 1 Name:</label>
+            <input type="text" id="player1" required> 
+            
+            <label for="player2">Player 2 Name:</label>
+            <input type="text" id="player2" required>
+            
+            <button type="submit">Save and Start Game</button>
+        </form>
+    </div>
 
- 
-    <script >
-        document.getElementById('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var player1 = document.getElementById('player1').value;
-    var player2 = document.getElementById('player2').value;
-    if (player1 && player2) {
-        localStorage.setItem('playerName1', player1);
-        localStorage.setItem('playerName2', player2);
-        window.location.href = 'index.html'; 
-    }
-});
+    <script>
+        document.getElementById('setupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const player1 = document.getElementById('player1').value.trim();
+            const player2 = document.getElementById('player2').value.trim();
 
+            localStorage.setItem('player1', player1);
+            localStorage.setItem('player2', player2);
 
+            window.location.href = 'index.html';  
+        });
     </script>
 </body>
 </html>
